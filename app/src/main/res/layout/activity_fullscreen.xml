@@ -60,13 +60,28 @@
             app:layout_constraintStart_toEndOf="@+id/hour"
     />
 
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline"
+            android:orientation="vertical" app:layout_constraintGuide_percent="0.5"/>
+    <FrameLayout
+            android:id="@+id/memoList"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp" app:layout_constraintStart_toStartOf="@id/guideline"
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp" android:layout_marginBottom="8dp">
+    </FrameLayout>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true" tools:layout_editor_absoluteY="0dp" tools:layout_editor_absoluteX="37dp">
+            android:fitsSystemWindows="true" tools:layout_editor_absoluteY="0dp" tools:layout_editor_absoluteX="37dp"
+            android:id="@+id/frameLayout">
 
         <LinearLayout
                 android:id="@+id/fullscreen_content_controls"

@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import com.screenmemo.premium.events.MemoFactory
+import com.screenmemo.premium.presentor.MemoListFragment
 import kotlinx.android.synthetic.main.activity_fullscreen.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,12 +26,12 @@ class FullscreenActivity : AppCompatActivity() {
     // and API 19 (KitKat). It is safe to use them, as they are inlined
     // at compile-time and do nothing on earlier devices.
     hour.systemUiVisibility =
-        View.SYSTEM_UI_FLAG_LOW_PROFILE or
-            View.SYSTEM_UI_FLAG_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+      View.SYSTEM_UI_FLAG_LOW_PROFILE or
+          View.SYSTEM_UI_FLAG_FULLSCREEN or
+          View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+          View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+          View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+          View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
   }
 
   private val mUpDateTimeRunnable = Runnable {
@@ -38,24 +40,24 @@ class FullscreenActivity : AppCompatActivity() {
     val month = calendar.get(Calendar.MONTH) + 1
     val day = calendar.get(Calendar.DAY_OF_MONTH)
     val hourTime = calendar.get(Calendar.HOUR_OF_DAY)
-    val minuteTime = calendar.get(Calendar.MINUTE)+1
+    val minuteTime = calendar.get(Calendar.MINUTE)
     val week = calendar.get(Calendar.WEEK_OF_YEAR)
     topText.text = "$year/$month/$day W$week"
-    if(hourTime<10){
+    if (hourTime < 10) {
       hour.text = "0$hourTime"
-    }else {
+    } else {
       hour.text = "$hourTime"
     }
 
-    if(minuteTime<10){
-      minute.text = "0:$minuteTime"
-    }else {
+    if (minuteTime < 10) {
+      minute.text = ":0$minuteTime"
+    } else {
       minute.text = ":$minuteTime"
     }
 
-    if(minuteTime<30){
+    if (minuteTime < 30) {
       light.background = ColorDrawable(Color.parseColor("#2E9E49"))
-    }else{
+    } else {
       light.background = ColorDrawable(Color.parseColor("#397AF2"))
     }
     updateTime()
@@ -91,12 +93,16 @@ class FullscreenActivity : AppCompatActivity() {
 
     // Set up the user interaction to manually show or hide the system UI.
     hour.setOnClickListener { toggle() }
+    minute.setOnClickListener {
+      MemoFactory.reset()
+    }
 
     // Upon interacting with UI controls, delay any scheduled hide()
     // operations to prevent the jarring behavior of controls going away
     // while interacting with the UI.
     dummy_button.setOnTouchListener(mDelayHideTouchListener)
     updateTime()
+    supportFragmentManager.beginTransaction().add(R.id.memoList, MemoListFragment()).commit()
   }
 
   private fun updateTime() {
@@ -135,8 +141,8 @@ class FullscreenActivity : AppCompatActivity() {
   private fun show() {
     // Show the system bar
     hour.systemUiVisibility =
-        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+      View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+          View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     mVisible = true
 
     // Schedule a runnable to display UI elements after a delay
